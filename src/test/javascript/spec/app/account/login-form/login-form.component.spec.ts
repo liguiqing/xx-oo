@@ -23,99 +23,99 @@ const i18n = config.initI18N(localVue);
 const store = config.initVueXStore(localVue);
 
 const axiosStub = {
-  get: sinon.stub(axios, 'get'),
-  post: sinon.stub(axios, 'post'),
+    get: sinon.stub(axios, 'get'),
+    post: sinon.stub(axios, 'post'),
 };
 
 describe('LoginForm Component', () => {
-  let wrapper: Wrapper<LoginFormClass>;
-  let loginForm: LoginFormClass;
+    let wrapper: Wrapper<LoginFormClass>;
+    let loginForm: LoginFormClass;
 
-  beforeEach(() => {
-    axiosStub.get.resolves({});
-    axiosStub.post.reset();
+    beforeEach(() => {
+        axiosStub.get.resolves({});
+        axiosStub.post.reset();
 
-    wrapper = shallowMount<LoginFormClass>(LoginForm, {
-      store,
-      i18n,
-      localVue,
-      provide: {
-        accountService: () => new AccountService(store, new TranslationService(store, i18n), new VueRouter()),
-      },
+        wrapper = shallowMount<LoginFormClass>(LoginForm, {
+            store,
+            i18n,
+            localVue,
+            provide: {
+                accountService: () => new AccountService(store, new TranslationService(store, i18n), new VueRouter()),
+            },
+        });
+        loginForm = wrapper.vm;
     });
-    loginForm = wrapper.vm;
-  });
 
-  it('should not store token if authentication is KO', async () => {
-    // GIVEN
-    loginForm.login = 'login';
-    loginForm.password = 'pwd';
-    loginForm.rememberMe = true;
-    axiosStub.post.rejects();
+    it('should not store token if authentication is KO', async () => {
+        // GIVEN
+        loginForm.login = 'login';
+        loginForm.password = 'pwd';
+        loginForm.rememberMe = true;
+        axiosStub.post.rejects();
 
-    // WHEN
-    loginForm.doLogin();
-    await loginForm.$nextTick();
+        // WHEN
+        loginForm.doLogin();
+        await loginForm.$nextTick();
 
-    // THEN
-    expect(
-      axiosStub.post.calledWith('api/authenticate', {
-        username: 'login',
-        password: 'pwd',
-        rememberMe: true,
-      })
-    ).toBeTruthy();
-    await loginForm.$nextTick();
-    expect(loginForm.authenticationError).toBeTruthy();
-  });
+        // THEN
+        expect(
+            axiosStub.post.calledWith('api/authenticate', {
+                username: 'login',
+                password: 'pwd',
+                rememberMe: true,
+            })
+        ).toBeTruthy();
+        await loginForm.$nextTick();
+        expect(loginForm.authenticationError).toBeTruthy();
+    });
 
-  it('should store token if authentication is OK', async () => {
-    // GIVEN
-    loginForm.login = 'login';
-    loginForm.password = 'pwd';
-    loginForm.rememberMe = true;
-    const jwtSecret = 'jwt-secret';
-    axiosStub.post.resolves({ headers: { authorization: 'Bearer ' + jwtSecret } });
+    it('should store token if authentication is OK', async () => {
+        // GIVEN
+        loginForm.login = 'login';
+        loginForm.password = 'pwd';
+        loginForm.rememberMe = true;
+        const jwtSecret = 'jwt-secret';
+        axiosStub.post.resolves({ headers: { authorization: 'Bearer ' + jwtSecret } });
 
-    // WHEN
-    loginForm.doLogin();
-    await loginForm.$nextTick();
+        // WHEN
+        loginForm.doLogin();
+        await loginForm.$nextTick();
 
-    // THEN
-    expect(
-      axiosStub.post.calledWith('api/authenticate', {
-        username: 'login',
-        password: 'pwd',
-        rememberMe: true,
-      })
-    ).toBeTruthy();
+        // THEN
+        expect(
+            axiosStub.post.calledWith('api/authenticate', {
+                username: 'login',
+                password: 'pwd',
+                rememberMe: true,
+            })
+        ).toBeTruthy();
 
-    expect(loginForm.authenticationError).toBeFalsy();
-    expect(localStorage.getItem('un-authenticationToken')).toEqual(jwtSecret);
-  });
+        expect(loginForm.authenticationError).toBeFalsy();
+        expect(localStorage.getItem('un-authenticationToken')).toEqual(jwtSecret);
+    });
 
-  it('should store token if authentication is OK in session', async () => {
-    // GIVEN
-    loginForm.login = 'login';
-    loginForm.password = 'pwd';
-    loginForm.rememberMe = false;
-    const jwtSecret = 'jwt-secret';
-    axiosStub.post.resolves({ headers: { authorization: 'Bearer ' + jwtSecret } });
+    it('should store token if authentication is OK in session', async () => {
+        // GIVEN
+        loginForm.login = 'login';
+        loginForm.password = 'pwd';
+        loginForm.rememberMe = false;
+        const jwtSecret = 'jwt-secret';
+        axiosStub.post.resolves({ headers: { authorization: 'Bearer ' + jwtSecret } });
 
-    // WHEN
-    loginForm.doLogin();
-    await loginForm.$nextTick();
+        // WHEN
+        loginForm.doLogin();
+        await loginForm.$nextTick();
 
-    // THEN
-    expect(
-      axiosStub.post.calledWith('api/authenticate', {
-        username: 'login',
-        password: 'pwd',
-        rememberMe: false,
-      })
-    ).toBeTruthy();
+        // THEN
+        expect(
+            axiosStub.post.calledWith('api/authenticate', {
+                username: 'login',
+                password: 'pwd',
+                rememberMe: false,
+            })
+        ).toBeTruthy();
 
-    expect(loginForm.authenticationError).toBeFalsy();
-    expect(sessionStorage.getItem('un-authenticationToken')).toEqual(jwtSecret);
-  });
+        expect(loginForm.authenticationError).toBeFalsy();
+        expect(sessionStorage.getItem('un-authenticationToken')).toEqual(jwtSecret);
+    });
 });

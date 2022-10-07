@@ -1,116 +1,116 @@
 import JhiDataUtils from '@/shared/data/data-utils.service';
 
 describe('Formatter i18n', () => {
-  let dataUtilsService: JhiDataUtils;
+    let dataUtilsService: JhiDataUtils;
 
-  beforeEach(() => {
-    dataUtilsService = new JhiDataUtils();
-  });
-
-  it('should not abbreviate text shorter than 30 characters', () => {
-    const result = dataUtilsService.abbreviate('JHipster JHipster');
-
-    expect(result).toBe('JHipster JHipster');
-  });
-
-  it('should abbreviate text longer than 30 characters', () => {
-    const result = dataUtilsService.abbreviate('JHipster JHipster JHipster JHipster JHipster');
-
-    expect(result).toBe('JHipster JHipst...r JHipster');
-  });
-
-  it('should retrieve byteSize', () => {
-    const result = dataUtilsService.byteSize('JHipster rocks!');
-
-    expect(result).toBe('11.25 bytes');
-  });
-
-  it('should clear input entity', () => {
-    const entity = { field: 'key', value: 'value' };
-    dataUtilsService.clearInputImage(entity, null, 'field', 'value', 1);
-
-    expect(entity.field).toBeNull();
-    expect(entity.value).toBeNull();
-  });
-
-  it('should open file', () => {
-    window.open = jest.fn().mockReturnValue({});
-    const objectURL = 'blob:http://localhost:9000/xxx';
-    URL.createObjectURL = jest.fn().mockImplementationOnce(() => {
-      return objectURL;
+    beforeEach(() => {
+        dataUtilsService = new JhiDataUtils();
     });
 
-    dataUtilsService.openFile('text', 'data');
+    it('should not abbreviate text shorter than 30 characters', () => {
+        const result = dataUtilsService.abbreviate('JHipster JHipster');
 
-    expect(window.open).toBeCalledWith(objectURL);
-  });
+        expect(result).toBe('JHipster JHipster');
+    });
 
-  it('should check text ends with suffix', () => {
-    const result = dataUtilsService.endsWith('rocky', 'JHipster rocks!');
+    it('should abbreviate text longer than 30 characters', () => {
+        const result = dataUtilsService.abbreviate('JHipster JHipster JHipster JHipster JHipster');
 
-    expect(result).toBe(false);
-  });
+        expect(result).toBe('JHipster JHipst...r JHipster');
+    });
 
-  it('should paddingSize to 0', () => {
-    const result = dataUtilsService.paddingSize('toto');
+    it('should retrieve byteSize', () => {
+        const result = dataUtilsService.byteSize('JHipster rocks!');
 
-    expect(result).toBe(0);
-  });
+        expect(result).toBe('11.25 bytes');
+    });
 
-  it('should paddingSize to 1', () => {
-    const result = dataUtilsService.paddingSize('toto=');
+    it('should clear input entity', () => {
+        const entity = { field: 'key', value: 'value' };
+        dataUtilsService.clearInputImage(entity, null, 'field', 'value', 1);
 
-    expect(result).toBe(1);
-  });
+        expect(entity.field).toBeNull();
+        expect(entity.value).toBeNull();
+    });
 
-  it('should paddingSize to 2', () => {
-    const result = dataUtilsService.paddingSize('toto==');
+    it('should open file', () => {
+        window.open = jest.fn().mockReturnValue({});
+        const objectURL = 'blob:http://localhost:9000/xxx';
+        URL.createObjectURL = jest.fn().mockImplementationOnce(() => {
+            return objectURL;
+        });
 
-    expect(result).toBe(2);
-  });
+        dataUtilsService.openFile('text', 'data');
 
-  it('should parse links', () => {
-    const result = dataUtilsService.parseLinks(
-      '<http://localhost/api/entities?' +
-        'sort=date%2Cdesc&sort=id&page=1&size=12>; rel="next",<http://localhost/api' +
-        '/entities?sort=date%2Cdesc&sort=id&page=2&size=12>; rel="last",<http://localhost' +
-        '/api/entities?sort=date%2Cdesc&sort=id&page=0&size=12>; rel="first"'
-    );
+        expect(window.open).toBeCalledWith(objectURL);
+    });
 
-    expect(result['last']).toBe(2);
-  });
+    it('should check text ends with suffix', () => {
+        const result = dataUtilsService.endsWith('rocky', 'JHipster rocks!');
 
-  it('should return empty JSON object for empty string', () => {
-    const result = dataUtilsService.parseLinks('');
+        expect(result).toBe(false);
+    });
 
-    expect(result).toStrictEqual({});
-  });
+    it('should paddingSize to 0', () => {
+        const result = dataUtilsService.paddingSize('toto');
 
-  it('should return empty JSON object for text with no link header', () => {
-    const result = dataUtilsService.parseLinks('JHipster rocks!');
+        expect(result).toBe(0);
+    });
 
-    expect(result).toStrictEqual({});
-  });
+    it('should paddingSize to 1', () => {
+        const result = dataUtilsService.paddingSize('toto=');
 
-  it('should return empty JSON object for text without >;', () => {
-    const result = dataUtilsService.parseLinks(
-      '<http://localhost/api/entities?' +
-        'sort=date%2Cdesc&sort=id&page=1&size=12> rel="next",<http://localhost/api' +
-        '/entities?sort=date%2Cdesc&sort=id&page=2&size=12> rel="last",<http://localhost' +
-        '/api/entities?sort=date%2Cdesc&sort=id&page=0&size=12> rel="first"'
-    );
+        expect(result).toBe(1);
+    });
 
-    expect(result).toStrictEqual({});
-  });
+    it('should paddingSize to 2', () => {
+        const result = dataUtilsService.paddingSize('toto==');
 
-  it('should return empty JSON object for text with no comma separated link header', () => {
-    const result = dataUtilsService.parseLinks(
-      '<http://localhost/api/entities?' +
-        'sort=id%2Cdesc&sort=id&page=1&size=12>; rel="next"<http://localhost/api' +
-        '/entities?sort=id%2Cdesc&sort=id&page=2&size=12>; rel="last"<http://localhost' +
-        '/api/entities?sort=id%2Cdesc&sort=id&page=0&size=12>; rel="first"'
-    );
+        expect(result).toBe(2);
+    });
 
-    expect(result).toStrictEqual({});
-  });
+    it('should parse links', () => {
+        const result = dataUtilsService.parseLinks(
+            '<http://localhost/api/entities?' +
+                'sort=date%2Cdesc&sort=id&page=1&size=12>; rel="next",<http://localhost/api' +
+                '/entities?sort=date%2Cdesc&sort=id&page=2&size=12>; rel="last",<http://localhost' +
+                '/api/entities?sort=date%2Cdesc&sort=id&page=0&size=12>; rel="first"'
+        );
+
+        expect(result['last']).toBe(2);
+    });
+
+    it('should return empty JSON object for empty string', () => {
+        const result = dataUtilsService.parseLinks('');
+
+        expect(result).toStrictEqual({});
+    });
+
+    it('should return empty JSON object for text with no link header', () => {
+        const result = dataUtilsService.parseLinks('JHipster rocks!');
+
+        expect(result).toStrictEqual({});
+    });
+
+    it('should return empty JSON object for text without >;', () => {
+        const result = dataUtilsService.parseLinks(
+            '<http://localhost/api/entities?' +
+                'sort=date%2Cdesc&sort=id&page=1&size=12> rel="next",<http://localhost/api' +
+                '/entities?sort=date%2Cdesc&sort=id&page=2&size=12> rel="last",<http://localhost' +
+                '/api/entities?sort=date%2Cdesc&sort=id&page=0&size=12> rel="first"'
+        );
+
+        expect(result).toStrictEqual({});
+    });
+
+    it('should return empty JSON object for text with no comma separated link header', () => {
+        const result = dataUtilsService.parseLinks(
+            '<http://localhost/api/entities?' +
+                'sort=id%2Cdesc&sort=id&page=1&size=12>; rel="next"<http://localhost/api' +
+                '/entities?sort=id%2Cdesc&sort=id&page=2&size=12>; rel="last"<http://localhost' +
+                '/api/entities?sort=id%2Cdesc&sort=id&page=0&size=12>; rel="first"'
+        );
+
+        expect(result).toStrictEqual({});
+    });
 });

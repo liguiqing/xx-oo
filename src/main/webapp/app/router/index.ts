@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 Component.registerHooks([
-  'beforeRouteEnter',
-  'beforeRouteLeave',
-  'beforeRouteUpdate', // for vue-router 2.2+
+    'beforeRouteEnter',
+    'beforeRouteLeave',
+    'beforeRouteUpdate', // for vue-router 2.2+
 ]);
 import Router, { RouteConfig } from 'vue-router';
 

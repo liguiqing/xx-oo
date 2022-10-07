@@ -50,98 +50,98 @@ import { accountStore } from '@/shared/config/store/account-store';
 import { translationStore } from '@/shared/config/store/translation-store';
 
 const dateTimeFormats: DateTimeFormats = {
-  'zh-cn': {
-    short: {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
+    'zh-cn': {
+        short: {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+        },
+        medium: {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            weekday: 'short',
+            hour: 'numeric',
+            minute: 'numeric',
+        },
+        long: {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            weekday: 'long',
+            hour: 'numeric',
+            minute: 'numeric',
+        },
     },
-    medium: {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      weekday: 'short',
-      hour: 'numeric',
-      minute: 'numeric',
-    },
-    long: {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      weekday: 'long',
-      hour: 'numeric',
-      minute: 'numeric',
-    },
-  },
-  // jhipster-needle-i18n-language-date-time-format - JHipster will add/remove format options in this object
+    // jhipster-needle-i18n-language-date-time-format - JHipster will add/remove format options in this object
 };
 
 export function initVueApp(vue) {
-  vue.use(VueCookie);
-  vue.use(Vuelidate);
-  vue.use(Vue2Filters);
-  filters.initFilters();
+    vue.use(VueCookie);
+    vue.use(Vuelidate);
+    vue.use(Vue2Filters);
+    filters.initFilters();
 }
 
 export function initFortAwesome(vue) {
-  library.add(
-    faArrowLeft,
-    faAsterisk,
-    faBan,
-    faBars,
-    faBell,
-    faBook,
-    faCloud,
-    faCogs,
-    faDatabase,
-    faEye,
-    faFlag,
-    faHeart,
-    faHome,
-    faList,
-    faLock,
-    faPencilAlt,
-    faPlus,
-    faRoad,
-    faSave,
-    faSearch,
-    faSignInAlt,
-    faSignOutAlt,
-    faSort,
-    faSortDown,
-    faSortUp,
-    faSync,
-    faTachometerAlt,
-    faTasks,
-    faThList,
-    faTimes,
-    faTimesCircle,
-    faTrash,
-    faUser,
-    faUserPlus,
-    faUsers,
-    faUsersCog,
-    faWrench
-  );
+    library.add(
+        faArrowLeft,
+        faAsterisk,
+        faBan,
+        faBars,
+        faBell,
+        faBook,
+        faCloud,
+        faCogs,
+        faDatabase,
+        faEye,
+        faFlag,
+        faHeart,
+        faHome,
+        faList,
+        faLock,
+        faPencilAlt,
+        faPlus,
+        faRoad,
+        faSave,
+        faSearch,
+        faSignInAlt,
+        faSignOutAlt,
+        faSort,
+        faSortDown,
+        faSortUp,
+        faSync,
+        faTachometerAlt,
+        faTasks,
+        faThList,
+        faTimes,
+        faTimesCircle,
+        faTrash,
+        faUser,
+        faUserPlus,
+        faUsers,
+        faUsersCog,
+        faWrench
+    );
 }
 
 export function initI18N(vue) {
-  vue.use(VueI18n);
-  return new VueI18n({
-    dateTimeFormats,
-    silentTranslationWarn: true,
-    formatter: new UnFormatter(),
-  });
+    vue.use(VueI18n);
+    return new VueI18n({
+        dateTimeFormats,
+        silentTranslationWarn: true,
+        formatter: new UnFormatter(),
+    });
 }
 
 export function initVueXStore(vue) {
-  vue.use(Vuex);
-  return new Vuex.Store({
-    modules: {
-      accountStore,
-      translationStore,
-    },
-  });
+    vue.use(Vuex);
+    return new Vuex.Store({
+        modules: {
+            accountStore,
+            translationStore,
+        },
+    });
 }

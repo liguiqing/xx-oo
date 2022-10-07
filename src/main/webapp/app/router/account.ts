@@ -8,36 +8,36 @@ const ChangePassword = () => import('@/account/change-password/change-password.v
 const Settings = () => import('@/account/settings/settings.vue');
 
 export default [
-  {
-    path: '/register',
-    name: 'Register',
-    component: Register,
-  },
-  {
-    path: '/account/activate',
-    name: 'Activate',
-    component: Activate,
-  },
-  {
-    path: '/account/reset/request',
-    name: 'ResetPasswordInit',
-    component: ResetPasswordInit,
-  },
-  {
-    path: '/account/reset/finish',
-    name: 'ResetPasswordFinish',
-    component: ResetPasswordFinish,
-  },
-  {
-    path: '/account/password',
-    name: 'ChangePassword',
-    component: ChangePassword,
-    meta: { authorities: [Authority.USER] },
-  },
-  {
-    path: '/account/settings',
-    name: 'Settings',
-    component: Settings,
-    meta: { authorities: [Authority.USER] },
-  },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register,
+    },
+    {
+        path: '/account/activate',
+        name: 'Activate',
+        component: Activate,
+    },
+    {
+        path: '/account/reset/request',
+        name: 'ResetPasswordInit',
+        component: ResetPasswordInit,
+    },
+    {
+        path: '/account/reset/finish',
+        name: 'ResetPasswordFinish',
+        component: ResetPasswordFinish,
+    },
+    {
+        path: '/account/password',
+        name: 'ChangePassword',
+        component: ChangePassword,
+        meta: { authorities: [Authority.USER] },
+    },
+    {
+        path: '/account/settings',
+        name: 'Settings',
+        component: Settings,
+        meta: { authorities: [Authority.USER] },
+    },
 ];

@@ -14,10 +14,7 @@
 # ===================================================================
 
 logging:
-  level:
-    ROOT: INFO
-    tech.jhipster: INFO
-    org.un.sample.vueapp: INFO
+  config: classpath:logback-spring-prod.xml
 
 management:
   metrics:

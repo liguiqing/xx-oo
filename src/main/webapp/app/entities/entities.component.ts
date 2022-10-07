@@ -5,6 +5,6 @@ import UserService from '@/entities/user/user.service';
 
 @Component
 export default class Entities extends Vue {
-  @Provide('userService') private userService = () => new UserService();
-  // jhipster-needle-add-entity-service-to-entities-component - JHipster will import entities services here
+    @Provide('userService') private userService = () => new UserService();
+    // jhipster-needle-add-entity-service-to-entities-component - JHipster will import entities services here
 }

@@ -5,37 +5,37 @@ import ActivateService from './activate.service';
 
 @Component
 export default class Activate extends Vue {
-  @Inject('activateService')
-  private activateService: () => ActivateService;
-  @Inject('loginService')
-  private loginService: () => LoginService;
-  success = false;
-  error = false;
+    @Inject('activateService')
+    private activateService: () => ActivateService;
+    @Inject('loginService')
+    private loginService: () => LoginService;
+    success = false;
+    error = false;
 
-  beforeRouteEnter(to, from, next) {
-    next(vm => {
-      if (to.query.key) {
-        vm.init(to.query.key);
-      }
-    });
-  }
+    beforeRouteEnter(to, from, next) {
+        next(vm => {
+            if (to.query.key) {
+                vm.init(to.query.key);
+            }
+        });
+    }
 
-  public init(key: string): void {
-    this.activateService()
-      .activateAccount(key)
-      .then(
-        () => {
-          this.success = true;
-          this.error = false;
-        },
-        () => {
-          this.error = true;
-          this.success = false;
-        }
-      );
-  }
+    public init(key: string): void {
+        this.activateService()
+            .activateAccount(key)
+            .then(
+                () => {
+                    this.success = true;
+                    this.error = false;
+                },
+                () => {
+                    this.error = true;
+                    this.success = false;
+                }
+            );
+    }
 
-  public openLogin(): void {
-    this.loginService().openLogin((<any>this).$root);
-  }
+    public openLogin(): void {
+        this.loginService().openLogin((<any>this).$root);
+    }
 }

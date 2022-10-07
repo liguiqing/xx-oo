@@ -8,12 +8,12 @@ import LoginForm from '@/account/login-form/login-form.vue';
 import '@/shared/config/dayjs';
 
 @Component({
-  components: {
-    ribbon: Ribbon,
-    'jhi-navbar': JhiNavbar,
-    'login-form': LoginForm,
+    components: {
+        ribbon: Ribbon,
+        'jhi-navbar': JhiNavbar,
+        'login-form': LoginForm,
 
-    'jhi-footer': JhiFooter,
-  },
+        'jhi-footer': JhiFooter,
+    },
 })
 export default class App extends Vue {}

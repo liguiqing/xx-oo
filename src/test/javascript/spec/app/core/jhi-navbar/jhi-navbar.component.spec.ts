@@ -20,85 +20,85 @@ localVue.component('b-navbar-brand', {});
 localVue.component('b-navbar-nav', {});
 
 describe('JhiNavbar', () => {
-  let jhiNavbar: JhiNavbarClass;
-  let wrapper: Wrapper<JhiNavbarClass>;
-  const loginService = { openLogin: jest.fn() };
-  const accountService = { hasAnyAuthorityAndCheckAuth: jest.fn().mockImplementation(() => Promise.resolve(true)) };
-  const translationService = { refreshTranslation: jest.fn() };
+    let jhiNavbar: JhiNavbarClass;
+    let wrapper: Wrapper<JhiNavbarClass>;
+    const loginService = { openLogin: jest.fn() };
+    const accountService = { hasAnyAuthorityAndCheckAuth: jest.fn().mockImplementation(() => Promise.resolve(true)) };
+    const translationService = { refreshTranslation: jest.fn() };
 
-  beforeEach(() => {
-    wrapper = shallowMount<JhiNavbarClass>(JhiNavbar, {
-      i18n,
-      store,
-      router,
-      localVue,
-      provide: {
-        loginService: () => loginService,
-        translationService: () => translationService,
-        accountService: () => accountService,
-      },
+    beforeEach(() => {
+        wrapper = shallowMount<JhiNavbarClass>(JhiNavbar, {
+            i18n,
+            store,
+            router,
+            localVue,
+            provide: {
+                loginService: () => loginService,
+                translationService: () => translationService,
+                accountService: () => accountService,
+            },
+        });
+        jhiNavbar = wrapper.vm;
     });
-    jhiNavbar = wrapper.vm;
-  });
-  it('should refresh translations', () => {
-    expect(translationService.refreshTranslation).toHaveBeenCalled();
-  });
+    it('should refresh translations', () => {
+        expect(translationService.refreshTranslation).toHaveBeenCalled();
+    });
 
-  it('should not have user data set', () => {
-    expect(jhiNavbar.authenticated).toBeFalsy();
-    expect(jhiNavbar.openAPIEnabled).toBeFalsy();
-    expect(jhiNavbar.inProduction).toBeFalsy();
-  });
+    it('should not have user data set', () => {
+        expect(jhiNavbar.authenticated).toBeFalsy();
+        expect(jhiNavbar.openAPIEnabled).toBeFalsy();
+        expect(jhiNavbar.inProduction).toBeFalsy();
+    });
 
-  it('should have user data set after authentication', () => {
-    store.commit('authenticated', { login: 'test' });
+    it('should have user data set after authentication', () => {
+        store.commit('authenticated', { login: 'test' });
 
-    expect(jhiNavbar.authenticated).toBeTruthy();
-  });
+        expect(jhiNavbar.authenticated).toBeTruthy();
+    });
 
-  it('should have profile info set after info retrieved', () => {
-    store.commit('setActiveProfiles', ['prod', 'api-docs']);
+    it('should have profile info set after info retrieved', () => {
+        store.commit('setActiveProfiles', ['prod', 'api-docs']);
 
-    expect(jhiNavbar.openAPIEnabled).toBeTruthy();
-    expect(jhiNavbar.inProduction).toBeTruthy();
-  });
+        expect(jhiNavbar.openAPIEnabled).toBeTruthy();
+        expect(jhiNavbar.inProduction).toBeTruthy();
+    });
 
-  it('should use login service', () => {
-    jhiNavbar.openLogin();
-    expect(loginService.openLogin).toHaveBeenCalled();
-  });
+    it('should use login service', () => {
+        jhiNavbar.openLogin();
+        expect(loginService.openLogin).toHaveBeenCalled();
+    });
 
-  it('should use account service', () => {
-    jhiNavbar.hasAnyAuthority('auth');
+    it('should use account service', () => {
+        jhiNavbar.hasAnyAuthority('auth');
 
-    expect(accountService.hasAnyAuthorityAndCheckAuth).toHaveBeenCalled();
-  });
+        expect(accountService.hasAnyAuthorityAndCheckAuth).toHaveBeenCalled();
+    });
 
-  it('logout should clear credentials', async () => {
-    store.commit('authenticated', { login: 'test' });
-    await jhiNavbar.logout();
+    it('logout should clear credentials', async () => {
+        store.commit('authenticated', { login: 'test' });
+        await jhiNavbar.logout();
 
-    expect(jhiNavbar.authenticated).toBeFalsy();
-  });
+        expect(jhiNavbar.authenticated).toBeFalsy();
+    });
 
-  it('should determine active route', () => {
-    router.push('/toto');
+    it('should determine active route', () => {
+        router.push('/toto');
 
-    expect(jhiNavbar.subIsActive('/titi')).toBeFalsy();
-    expect(jhiNavbar.subIsActive('/toto')).toBeTruthy();
-    expect(jhiNavbar.subIsActive(['/toto', 'toto'])).toBeTruthy();
-  });
+        expect(jhiNavbar.subIsActive('/titi')).toBeFalsy();
+        expect(jhiNavbar.subIsActive('/toto')).toBeTruthy();
+        expect(jhiNavbar.subIsActive(['/toto', 'toto'])).toBeTruthy();
+    });
 
-  it('should call translationService when changing language', () => {
-    jhiNavbar.changeLanguage('fr');
+    it('should call translationService when changing language', () => {
+        jhiNavbar.changeLanguage('fr');
 
-    expect(translationService.refreshTranslation).toHaveBeenCalled();
-  });
+        expect(translationService.refreshTranslation).toHaveBeenCalled();
+    });
 
-  it('should check for correct language', () => {
-    store.commit('currentLanguage', 'fr');
+    it('should check for correct language', () => {
+        store.commit('currentLanguage', 'fr');
 
-    expect(jhiNavbar.isActiveLanguage('en')).toBeFalsy();
-    expect(jhiNavbar.isActiveLanguage('fr')).toBeTruthy();
-  });
+        expect(jhiNavbar.isActiveLanguage('en')).toBeFalsy();
+        expect(jhiNavbar.isActiveLanguage('fr')).toBeTruthy();
+    });
 });

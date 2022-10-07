@@ -11,6 +11,7 @@
 spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
     hikari:
       auto-commit: false
       poolName: Hikari

@@ -11,51 +11,51 @@ config.initVueApp(localVue);
 const i18n = config.initI18N(localVue);
 
 const axiosStub = {
-  get: sinon.stub(axios, 'get'),
-  post: sinon.stub(axios, 'post'),
+    get: sinon.stub(axios, 'get'),
+    post: sinon.stub(axios, 'post'),
 };
 
 describe('Reset Component Init', () => {
-  let wrapper: Wrapper<ResetPasswordInitClass>;
-  let resetPasswordInit: ResetPasswordInitClass;
+    let wrapper: Wrapper<ResetPasswordInitClass>;
+    let resetPasswordInit: ResetPasswordInitClass;
 
-  beforeEach(() => {
-    axiosStub.post.reset();
-    wrapper = shallowMount<ResetPasswordInitClass>(ResetPasswordInit, {
-      i18n,
-      localVue,
-    });
-    resetPasswordInit = wrapper.vm;
-  });
-
-  it('should reset request be a success', async () => {
-    // Given
-    axiosStub.post.resolves();
-
-    // When
-    await resetPasswordInit.requestReset();
-
-    // Then
-    expect(resetPasswordInit.success).toBeTruthy();
-  });
-
-  it('should reset request fail as an error', async () => {
-    // Given
-    axiosStub.post.rejects({
-      response: {
-        status: null,
-        data: {
-          type: null,
-        },
-      },
+    beforeEach(() => {
+        axiosStub.post.reset();
+        wrapper = shallowMount<ResetPasswordInitClass>(ResetPasswordInit, {
+            i18n,
+            localVue,
+        });
+        resetPasswordInit = wrapper.vm;
     });
 
-    // When
-    resetPasswordInit.requestReset();
-    await resetPasswordInit.$nextTick();
+    it('should reset request be a success', async () => {
+        // Given
+        axiosStub.post.resolves();
 
-    // Then
-    expect(resetPasswordInit.success).toBeNull();
-    expect(resetPasswordInit.error).toEqual('ERROR');
-  });
+        // When
+        await resetPasswordInit.requestReset();
+
+        // Then
+        expect(resetPasswordInit.success).toBeTruthy();
+    });
+
+    it('should reset request fail as an error', async () => {
+        // Given
+        axiosStub.post.rejects({
+            response: {
+                status: null,
+                data: {
+                    type: null,
+                },
+            },
+        });
+
+        // When
+        resetPasswordInit.requestReset();
+        await resetPasswordInit.$nextTick();
+
+        // Then
+        expect(resetPasswordInit.success).toBeNull();
+        expect(resetPasswordInit.error).toEqual('ERROR');
+    });
 });

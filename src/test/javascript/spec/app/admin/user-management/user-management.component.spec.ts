@@ -22,99 +22,99 @@ localVue.component('jhi-sort-indicator', {});
 localVue.directive('b-modal', {});
 
 const axiosStub = {
-  delete: sinon.stub(axios, 'delete'),
-  get: sinon.stub(axios, 'get'),
-  put: sinon.stub(axios, 'put'),
+    delete: sinon.stub(axios, 'delete'),
+    get: sinon.stub(axios, 'get'),
+    put: sinon.stub(axios, 'put'),
 };
 
 describe('UserManagement Component', () => {
-  let wrapper: Wrapper<UserManagementClass>;
-  let userManagement: UserManagementClass;
+    let wrapper: Wrapper<UserManagementClass>;
+    let userManagement: UserManagementClass;
 
-  const account = {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@jhipster.org',
-  };
+    const account = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@jhipster.org',
+    };
 
-  beforeEach(() => {
-    axiosStub.put.reset();
-    axiosStub.get.reset();
-    axiosStub.get.resolves({ headers: {} });
+    beforeEach(() => {
+        axiosStub.put.reset();
+        axiosStub.get.reset();
+        axiosStub.get.resolves({ headers: {} });
 
-    store.commit('authenticated', account);
-    wrapper = shallowMount<UserManagementClass>(UserManagement, {
-      store,
-      i18n,
-      localVue,
-      stubs: {
-        bPagination: true,
-        jhiItemCount: true,
-        bModal: true,
-      },
-      provide: {
-        userManagementService: () => new UserManagementService(),
-        alertService: () => new AlertService(),
-      },
+        store.commit('authenticated', account);
+        wrapper = shallowMount<UserManagementClass>(UserManagement, {
+            store,
+            i18n,
+            localVue,
+            stubs: {
+                bPagination: true,
+                jhiItemCount: true,
+                bModal: true,
+            },
+            provide: {
+                userManagementService: () => new UserManagementService(),
+                alertService: () => new AlertService(),
+            },
+        });
+        userManagement = wrapper.vm;
     });
-    userManagement = wrapper.vm;
-  });
 
-  describe('OnInit', () => {
-    it('Should call load all on init', async () => {
-      // WHEN
-      userManagement.loadAll();
-      await userManagement.$nextTick();
+    describe('OnInit', () => {
+        it('Should call load all on init', async () => {
+            // WHEN
+            userManagement.loadAll();
+            await userManagement.$nextTick();
 
-      // THEN
-      expect(axiosStub.get.calledWith(`api/admin/users?sort=id,asc&page=0&size=20`)).toBeTruthy();
+            // THEN
+            expect(axiosStub.get.calledWith(`api/admin/users?sort=id,asc&page=0&size=20`)).toBeTruthy();
+        });
     });
-  });
 
-  describe('setActive', () => {
-    it('Should update user and call load all', async () => {
-      // GIVEN
-      axiosStub.put.resolves({});
+    describe('setActive', () => {
+        it('Should update user and call load all', async () => {
+            // GIVEN
+            axiosStub.put.resolves({});
 
-      // WHEN
-      userManagement.setActive({ id: 123 }, true);
-      await userManagement.$nextTick();
+            // WHEN
+            userManagement.setActive({ id: 123 }, true);
+            await userManagement.$nextTick();
 
-      // THEN
-      expect(axiosStub.put.calledWith(`api/admin/users`, { id: 123, activated: true })).toBeTruthy();
-      expect(axiosStub.get.calledWith(`api/admin/users?sort=id,asc&page=0&size=20`)).toBeTruthy();
+            // THEN
+            expect(axiosStub.put.calledWith(`api/admin/users`, { id: 123, activated: true })).toBeTruthy();
+            expect(axiosStub.get.calledWith(`api/admin/users?sort=id,asc&page=0&size=20`)).toBeTruthy();
+        });
     });
-  });
 
-  describe('confirmDelete', () => {
-    it('Should call delete service on confirmDelete', async () => {
-      // GIVEN
-      axiosStub.delete.resolves({
-        headers: {
-          'x-vuesampleapp-alert': '',
-          'x-vuesampleapp-params': '',
-        },
-      });
+    describe('confirmDelete', () => {
+        it('Should call delete service on confirmDelete', async () => {
+            // GIVEN
+            axiosStub.delete.resolves({
+                headers: {
+                    'x-vuesampleapp-alert': '',
+                    'x-vuesampleapp-params': '',
+                },
+            });
 
-      // WHEN
-      userManagement.prepareRemove({ login: 123 });
-      userManagement.deleteUser();
-      await userManagement.$nextTick();
+            // WHEN
+            userManagement.prepareRemove({ login: 123 });
+            userManagement.deleteUser();
+            await userManagement.$nextTick();
 
-      // THEN
-      expect(axiosStub.delete.calledWith('api/admin/users/' + 123)).toBeTruthy();
-      expect(axiosStub.get.calledWith(`api/admin/users?sort=id,asc&page=0&size=20`)).toBeTruthy();
+            // THEN
+            expect(axiosStub.delete.calledWith('api/admin/users/' + 123)).toBeTruthy();
+            expect(axiosStub.get.calledWith(`api/admin/users?sort=id,asc&page=0&size=20`)).toBeTruthy();
+        });
     });
-  });
 
-  describe('change order', () => {
-    it('should change order and invert reverse', () => {
-      // WHEN
-      userManagement.changeOrder('dummy-order');
+    describe('change order', () => {
+        it('should change order and invert reverse', () => {
+            // WHEN
+            userManagement.changeOrder('dummy-order');
 
-      // THEN
-      expect(userManagement.propOrder).toEqual('dummy-order');
-      expect(userManagement.reverse).toBe(true);
+            // THEN
+            expect(userManagement.propOrder).toEqual('dummy-order');
+            expect(userManagement.reverse).toBe(true);
+        });
     });
-  });
 });

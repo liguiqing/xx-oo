@@ -23,11 +23,19 @@ import AlertService from './shared/alert/alert.service';
 import '../content/scss/global.scss';
 import '../content/scss/vendor.scss';
 import TranslationService from '@/locale/translation.service';
+import dayjs from 'dayjs';
+import { DATE_TIME_FORMAT_ISO } from './constants';
 /* tslint:disable */
 
 // jhipster-needle-add-entity-service-to-main-import - JHipster will import entities services here
 
 /* tslint:enable */
+
+/* tslint:disable */
+// Date.prototype.toJSON = (): string => dayjs(this).format(DATE_TIME_FORMAT_ISO);
+Date.prototype.toJSON = function () {
+    return dayjs(this).format(DATE_TIME_FORMAT_ISO);
+};
 Vue.config.productionTip = false;
 config.initVueApp(Vue);
 config.initFortAwesome(Vue);
@@ -46,62 +54,62 @@ const loginService = new LoginService();
 const accountService = new AccountService(store, translationService, router);
 
 router.beforeEach(async (to, from, next) => {
-  if (!to.matched.length) {
-    next('/not-found');
-  } else if (to.meta && to.meta.authorities && to.meta.authorities.length > 0) {
-    accountService.hasAnyAuthorityAndCheckAuth(to.meta.authorities).then(value => {
-      if (!value) {
-        sessionStorage.setItem('requested-url', to.fullPath);
-        next('/forbidden');
-      } else {
+    if (!to.matched.length) {
+        next('/not-found');
+    } else if (to.meta && to.meta.authorities && to.meta.authorities.length > 0) {
+        accountService.hasAnyAuthorityAndCheckAuth(to.meta.authorities).then(value => {
+            if (!value) {
+                sessionStorage.setItem('requested-url', to.fullPath);
+                next('/forbidden');
+            } else {
+                next();
+            }
+        });
+    } else {
+        // no authorities, so just proceed
         next();
-      }
-    });
-  } else {
-    // no authorities, so just proceed
-    next();
-  }
+    }
 });
 
 /* tslint:disable */
 const vue = new Vue({
-  el: '#app',
-  components: { App },
-  template: '<App/>',
-  router,
-  provide: {
-    loginService: () => loginService,
-    activateService: () => new ActivateService(),
-    registerService: () => new RegisterService(),
-    userManagementService: () => new UserManagementService(),
+    el: '#app',
+    components: { App },
+    template: '<App/>',
+    router,
+    provide: {
+        loginService: () => loginService,
+        activateService: () => new ActivateService(),
+        registerService: () => new RegisterService(),
+        userManagementService: () => new UserManagementService(),
 
-    translationService: () => translationService,
-    // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
-    accountService: () => accountService,
-    alertService: () => new AlertService(),
-  },
-  i18n,
-  store,
+        translationService: () => translationService,
+        // jhipster-needle-add-entity-service-to-main - JHipster will import entities services here
+        accountService: () => accountService,
+        alertService: () => new AlertService(),
+    },
+    i18n,
+    store,
 });
 
 setupAxiosInterceptors(
-  error => {
-    const url = error.response?.config?.url;
-    const status = error.status || error.response.status;
-    if (status === 401) {
-      // Store logged out state.
-      store.commit('logout');
-      if (!url.endsWith('api/account') && !url.endsWith('api/authenticate')) {
-        // Ask for a new authentication
-        loginService.openLogin(vue);
-        return;
-      }
+    error => {
+        const url = error.response?.config?.url;
+        const status = error.status || error.response.status;
+        if (status === 401) {
+            // Store logged out state.
+            store.commit('logout');
+            if (!url.endsWith('api/account') && !url.endsWith('api/authenticate')) {
+                // Ask for a new authentication
+                loginService.openLogin(vue);
+                return;
+            }
+        }
+        console.log('Unauthorized!');
+        return Promise.reject(error);
+    },
+    error => {
+        console.log('Server error!');
+        return Promise.reject(error);
     }
-    console.log('Unauthorized!');
-    return Promise.reject(error);
-  },
-  error => {
-    console.log('Server error!');
-    return Promise.reject(error);
-  }
 );

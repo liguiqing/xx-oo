@@ -20,50 +20,50 @@ localVue.component('b-badge', {});
 localVue.component('router-link', {});
 
 const axiosStub = {
-  get: sinon.stub(axios, 'get'),
+    get: sinon.stub(axios, 'get'),
 };
 
 describe('UserManagementView Component', () => {
-  let wrapper: Wrapper<UserManagementViewClass>;
-  let userManagementView: UserManagementViewClass;
+    let wrapper: Wrapper<UserManagementViewClass>;
+    let userManagementView: UserManagementViewClass;
 
-  beforeEach(() => {
-    wrapper = shallowMount<UserManagementViewClass>(UserManagementView, {
-      store,
-      i18n,
-      localVue,
-      provide: { userManagementService: () => new UserManagementService(), alertService: () => new AlertService() },
+    beforeEach(() => {
+        wrapper = shallowMount<UserManagementViewClass>(UserManagementView, {
+            store,
+            i18n,
+            localVue,
+            provide: { userManagementService: () => new UserManagementService(), alertService: () => new AlertService() },
+        });
+        userManagementView = wrapper.vm;
     });
-    userManagementView = wrapper.vm;
-  });
 
-  describe('OnInit', () => {
-    it('Should call load all on init', async () => {
-      // GIVEN
-      const userData = {
-        id: 1,
-        login: 'user',
-        firstName: 'first',
-        lastName: 'last',
-        email: 'first@last.com',
-        activated: true,
-        langKey: 'en',
-        authorities: [Authority.USER],
-        createdBy: 'admin',
-        createdDate: null,
-        lastModifiedBy: null,
-        lastModifiedDate: null,
-        password: null,
-      };
-      axiosStub.get.resolves({ data: userData });
+    describe('OnInit', () => {
+        it('Should call load all on init', async () => {
+            // GIVEN
+            const userData = {
+                id: 1,
+                login: 'user',
+                firstName: 'first',
+                lastName: 'last',
+                email: 'first@last.com',
+                activated: true,
+                langKey: 'en',
+                authorities: [Authority.USER],
+                createdBy: 'admin',
+                createdDate: null,
+                lastModifiedBy: null,
+                lastModifiedDate: null,
+                password: null,
+            };
+            axiosStub.get.resolves({ data: userData });
 
-      // WHEN
-      userManagementView.init(123);
-      await userManagementView.$nextTick();
+            // WHEN
+            userManagementView.init(123);
+            await userManagementView.$nextTick();
 
-      // THEN
-      expect(axiosStub.get.calledWith('api/admin/users/' + 123)).toBeTruthy();
-      expect(userManagementView.user).toEqual(userData);
+            // THEN
+            expect(axiosStub.get.calledWith('api/admin/users/' + 123)).toBeTruthy();
+            expect(userManagementView.user).toEqual(userData);
+        });
     });
-  });
 });

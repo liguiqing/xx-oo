@@ -8,10 +8,10 @@
 
 
     <!--
-        JHipster core tables.
+        Core tables.
         The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
     -->
-    <changeSet id="00000000000001" author="jhipster">
+    <changeSet id="00000000000001" author="liguiqing">
         <createTable tableName="un_user">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
@@ -100,7 +100,7 @@
         </loadData>
     </changeSet>
 
-    <changeSet author="jhipster" id="00000000000002" context="test">
+    <changeSet author="liguiqing" id="00000000000002" context="test">
         <createTable tableName="un_date_time_wrapper">
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true" primaryKeyName="un_date_time_wrapperPK"/>

@@ -1,1 +1,1 @@
-org.springframework.test.context.ContextCustomizerFactory = org.un.sample.vueapp.config.TestContainersSpringContextCustomizerFactory
+org.springframework.test.context.ContextCustomizerFactory = com.xx.oo.app.config.TestContainersSpringContextCustomizerFactory

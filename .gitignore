@@ -14,7 +14,7 @@ node_modules/
 npm-debug.log.*
 /.awcache/*
 /.cache-loader/*
-
+package-lock.json
 ######################
 # SASS
 ######################
@@ -70,6 +70,7 @@ out/
 # Visual Studio Code
 ######################
 .vscode/*
+.history/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
